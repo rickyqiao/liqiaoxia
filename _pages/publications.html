@@ -18,91 +18,53 @@ author_profile: true
 {% endcomment %}
 
 {% assign publications = site.publications | sort: "sortkey" | reverse %}
-{% assign journal_publications = publications | where: "category", "manuscripts" %}
-{% assign conference_publications = publications | where: "category", "conferences" %}
-{% assign preprint_publications = publications | where: "category", "preprints" %}
+{% assign current_year = "" %}
 
-<section class="cv-section">
-  <h2 style="color:#c00000;">Journal Articles</h2>
-  <ol class="pub-list">
-    {% for post in journal_publications %}
-      {% assign citation_html = post.citation | replace: "Liqiao Xia", "<strong>Liqiao Xia</strong>" | replace: "L. Xia", "<strong>L. Xia</strong>" %}
-      <li class="pub-item">
-        <div class="pub-citation">{{ citation_html }}</div>
-        {% if post.note %}
-          <div class="pub-note">{{ post.note }}</div>
+{% for post in publications %}
+  {% assign post_year = post.date | date: "%Y" %}
+  {% assign citation_html = post.citation | replace: "Liqiao Xia", "<strong>Liqiao Xia</strong>" | replace: "L. Xia", "<strong>L. Xia</strong>" | markdownify | remove: "<p>" | remove: "</p>" %}
+
+  {% if post_year != current_year %}
+    {% unless forloop.first %}
+      </ol>
+    </section>
+    {% endunless %}
+    <section class="cv-section">
+      <h2 style="color:#c00000;">{{ post_year }}</h2>
+      <ol class="pub-list">
+    {% assign current_year = post_year %}
+  {% endif %}
+
+  <li class="pub-item">
+    <div class="pub-citation">{{ citation_html }}</div>
+    {% if post.note %}
+      <div class="pub-note">{{ post.note }}</div>
+    {% endif %}
+    {% if post.category == "conferences" %}
+      <div class="pub-meta">Conference Paper</div>
+    {% elsif post.category == "preprints" %}
+      <div class="pub-meta">Preprint</div>
+    {% endif %}
+    {% if post.paperurl or post.recordurl %}
+      <p class="pub-links">
+        {% if post.paperurl %}
+          <a href="{{ post.paperurl }}" target="_blank" rel="noopener">View paper</a>
         {% endif %}
-        {% if post.paperurl or post.recordurl %}
-          <p class="pub-links">
-            {% if post.paperurl %}
-              <a href="{{ post.paperurl }}" target="_blank" rel="noopener">View paper</a>
-            {% endif %}
-            {% if post.paperurl and post.recordurl %}
-              <span class="pub-sep">|</span>
-            {% endif %}
-            {% if post.recordurl %}
-              <a href="{{ post.recordurl }}" target="_blank" rel="noopener">View record</a>
-            {% endif %}
-          </p>
+        {% if post.paperurl and post.recordurl %}
+          <span class="pub-sep">|</span>
         {% endif %}
-      </li>
-    {% endfor %}
-  </ol>
-</section>
+        {% if post.recordurl %}
+          <a href="{{ post.recordurl }}" target="_blank" rel="noopener">View record</a>
+        {% endif %}
+      </p>
+    {% endif %}
+  </li>
 
-{% if conference_publications.size > 0 %}
-  <section class="cv-section">
-    <h2 style="color:#c00000;">Conference Papers</h2>
-    <ol class="pub-list">
-      {% for post in conference_publications %}
-        {% assign citation_html = post.citation | replace: "Liqiao Xia", "<strong>Liqiao Xia</strong>" | replace: "L. Xia", "<strong>L. Xia</strong>" %}
-        <li class="pub-item">
-          <div class="pub-citation">{{ citation_html }}</div>
-          {% if post.paperurl or post.recordurl %}
-            <p class="pub-links">
-              {% if post.paperurl %}
-                <a href="{{ post.paperurl }}" target="_blank" rel="noopener">View paper</a>
-              {% endif %}
-              {% if post.paperurl and post.recordurl %}
-                <span class="pub-sep">|</span>
-              {% endif %}
-              {% if post.recordurl %}
-                <a href="{{ post.recordurl }}" target="_blank" rel="noopener">View record</a>
-              {% endif %}
-            </p>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ol>
-  </section>
-{% endif %}
-
-{% if preprint_publications.size > 0 %}
-  <section class="cv-section">
-    <h2 style="color:#c00000;">Preprints and Other Publications</h2>
-    <ol class="pub-list">
-      {% for post in preprint_publications %}
-        {% assign citation_html = post.citation | replace: "Liqiao Xia", "<strong>Liqiao Xia</strong>" | replace: "L. Xia", "<strong>L. Xia</strong>" %}
-        <li class="pub-item">
-          <div class="pub-citation">{{ citation_html }}</div>
-          {% if post.paperurl or post.recordurl %}
-            <p class="pub-links">
-              {% if post.paperurl %}
-                <a href="{{ post.paperurl }}" target="_blank" rel="noopener">View paper</a>
-              {% endif %}
-              {% if post.paperurl and post.recordurl %}
-                <span class="pub-sep">|</span>
-              {% endif %}
-              {% if post.recordurl %}
-                <a href="{{ post.recordurl }}" target="_blank" rel="noopener">View record</a>
-              {% endif %}
-            </p>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ol>
-  </section>
-{% endif %}
+  {% if forloop.last %}
+      </ol>
+    </section>
+  {% endif %}
+{% endfor %}
 
 <style>
   .pub-list {
@@ -124,6 +86,16 @@ author_profile: true
     font-size: 0.95rem;
     font-style: italic;
     margin-bottom: 0.25rem;
+  }
+
+  .pub-meta {
+    color: #666;
+    font-size: 0.92rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .pub-citation strong {
+    font-weight: 700;
   }
 
   .pub-links {
