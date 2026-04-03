@@ -11,51 +11,17 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Industrial and Systems Engineering, Hong Kong Polytechnic University, HKSAR, 2024
-* M.S. in Data-Driven Modeling,  Hong Kong University of Science and Technology, 2020
+* Ph.D. in Industrial and Systems Engineering, The Hong Kong Polytechnic University, Hong Kong SAR, 2024
+* M.S. in Data-Driven Modeling, The Hong Kong University of Science and Technology, Hong Kong SAR, 2020
 * B.S. in Statistics, South China Agricultural University, 2017
 
-Work experience
+Work Experience
 ======
-* 2025.04-Present: Research Assistant Professor
-  * GitHub University
-
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Supervisor: Professor Hub
-
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Supervisor: Professor Git
-  
-Skills
-======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
-
-Publications
-======
-  {% assign sorted_publications = site.publications | sort: "sortkey" | reverse %}
-  <ul>{% for post in sorted_publications %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
+* 2025.04-Present: Research Assistant Professor, Department of Industrial and Systems Engineering, The Hong Kong Polytechnic University
   
 Teaching
 ======
-  <ul>{% for post in site.teaching reversed %}
+  {% assign teaching_posts = site.teaching | sort: "date" | reverse %}
+  <ul>{% for post in teaching_posts %}
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams

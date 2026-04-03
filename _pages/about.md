@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Welcome, 欢迎, Bienvenue, Bienvenidos, Willkommen, سَلَام，Benvenuto, Добро пожаловать"
+title: "Liqiao Xia"
 author_profile: true
 redirect_from: 
   - /about/
